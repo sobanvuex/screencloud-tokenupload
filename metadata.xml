@@ -1,1 +1,7 @@
-.keep
+<metadata>
+	<name>URL Upload</name>
+	<shortname>urlupload</shortname>
+	<className>UrlUpload</className>
+	<icon>icon.png</icon>
+	<version>1.0</version>
+</metadata>
