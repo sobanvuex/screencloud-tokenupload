@@ -1,7 +1,7 @@
 <metadata>
-	<name>URL Upload</name>
-	<shortname>urlupload</shortname>
-	<className>UrlUploader</className>
+	<name>URL Token Upload</name>
+	<shortname>tokenupload</shortname>
+	<className>TokenUploader</className>
 	<icon>icon.png</icon>
 	<version>1.0</version>
 </metadata>
