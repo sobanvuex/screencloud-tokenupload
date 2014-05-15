@@ -29,4 +29,4 @@ For your endpoint to interact properly with this plugin it requires the followin
     * For success: `{"href": "http://example.com/<screenshot>"}`
     * For error: `{"error": "<Error> happened"}`
 
-[current]: ../archive/master.zip
+[current]: ../../archive/master.zip
