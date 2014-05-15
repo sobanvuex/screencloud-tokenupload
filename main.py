@@ -12,9 +12,9 @@ class TokenUploader():
 		self.uil = QUiLoader()
 		self.loadSettings()
 
-	def showSettingsUI(self, parent_widget):
-		self.parentWidget = parent_widget
-		self.settingsDialog = self.uil.load(QFile(workingDir + "/settings.ui"), parent_widget)
+	def showSettingsUI(self, parentWidget):
+		self.parentWidget = parentWidget
+		self.settingsDialog = self.uil.load(QFile(workingDir + "/settings.ui"), parentWidget)
 		self.settingsDialog.group_screenshot.input_name.connect("textChanged(QString)", self.nameFormatEdited)
 		self.settingsDialog.connect("accepted()", self.saveSettings)
 		self.loadSettings()
