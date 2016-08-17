@@ -1,6 +1,6 @@
 import ScreenCloud
 import json
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 from PythonQt.QtCore import QSettings, QByteArray, QBuffer, QIODevice, QFile
 from PythonQt.QtGui import QWidget, QDialog
@@ -17,12 +17,15 @@ class TokenUploader():
 
         self.parentWidget = parentWidget
         self.settingsDialog = self.uil.load(QFile(workingDir + "/settings.ui"), parentWidget)
+        
         self.settingsDialog.group_screenshot.input_name.connect("textChanged(QString)", self.nameFormatEdited)
         self.settingsDialog.connect("accepted()", self.saveSettings)
         self.loadSettings()
+        
         self.settingsDialog.group_url.input_token.text = self.url_token
         self.settingsDialog.group_url.input_address.text = self.url_address
         self.settingsDialog.group_screenshot.input_name.text = self.name_format
+        
         self.settingsDialog.open()
 
     def nameFormatEdited(self, name_format):
@@ -32,22 +35,28 @@ class TokenUploader():
     def loadSettings(self):
 
         settings = QSettings()
+        
         settings.beginGroup("uploaders")
         settings.beginGroup("tokenupload")
+        
         self.url_token = settings.value("url-token", "")
         self.url_address = settings.value("url-address", "")
         self.name_format = settings.value("name-format", "Screenshot (%Y-%m-%d %H-%M-%S)")
+        
         settings.endGroup()
         settings.endGroup()
 
     def saveSettings(self):
 
         settings = QSettings()
+        
         settings.beginGroup("uploaders")
         settings.beginGroup("tokenupload")
+        
         settings.setValue("url-token", self.settingsDialog.group_url.input_token.text)
         settings.setValue("url-address", self.settingsDialog.group_url.input_address.text)
         settings.setValue("name-format", self.settingsDialog.group_screenshot.input_name.text)
+        
         settings.endGroup()
         settings.endGroup()
 
@@ -73,36 +82,31 @@ class TokenUploader():
         q_buff.close()
         
         image = q_ba.toBase64().data()
-        data = json.dumps({'token': self.url_token, 'name': name, 'image': image})
+        data = json.dumps({'token': self.url_token, 'name': name, 'image': image.decode('utf-8')})
+        binary = data.encode('utf-8')
+        
         headers = {'Content-Type': 'application/json', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.54 Safari/537.36'}
-        request = urllib2.Request(self.url_address, data, headers)
+        request = urllib.request.Request(self.url_address, binary, headers)
 
         try:
+            
+            reply = urllib.request.urlopen(request)
 
-            reply = urllib2.urlopen(request)
-
-        except urllib2.HTTPError as exc:
-
-            ScreenCloud.setError("Could not upload to: " + self.url_address + "\nError:\n" + exc.fp.read())
-            return False
-
-        try:
-
-            response = reply.read()
+            response = reply.read().decode('utf-8')
             data = json.loads(response)
             error = data.get('error')
             url = data.get('href')
 
             if error:
 
-                raise Exception(error)
+                ScreenCloud.setError("Could not upload to: " + self.url_address + "\nError: " + error)
+                return False
 
             ScreenCloud.setUrl(url)
-
-        except Exception as e:
-
-            ScreenCloud.setError("Could not upload to: " + self.url_address + "\nError: " + e.message)
-
+            
+        except urllib.error.HTTPError as exc:
+        
+            ScreenCloud.setError("Error while connecting to: " + self.url_address + "\nError:\n" + exc.fp.read())
             return False
-
+            
         return True
