@@ -10,6 +10,10 @@ Installation
 
 Install [URL Token Upload][current] zip in **ScreenCloud** > **Preferences** > **Online Services** > **More Services** > **Install from URL**
 
+![](http://i.imgur.com/lQIdGt4.png)
+
+**Note:** If you are using ScreenCloud version 1.2.0 or earlier, please use [screencloud-tokenupload release v1.0.0](https://github.com/RezzedUp/screencloud-tokenupload/releases) This version is written with Python 2, which is no longer compatible with ScreenCloud (since ScreenCloud 1.3.0).
+
 Plugin Configuration
 --------------------
 
@@ -28,6 +32,11 @@ For your endpoint to interact properly with this plugin it requires the followin
  * Return JSON formatted response
     * For success: `{"href": "http://example.com/<screenshot>"}`
     * For error: `{"error": "<Error> happened"}`
+
+Installable Endpoint
+--------------------
+
+For a ready-to-use endpoint written in Node.js, use [Screencloud Token Upload Server.](https://github.com/RezzedUp/screencloud-tokenupload-server)
 
 Example Endpoint
 ----------------
