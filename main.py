@@ -1,5 +1,6 @@
 import ScreenCloud
 import json
+import traceback
 import urllib.request, urllib.error, urllib.parse
 
 from PythonQt.QtCore import QSettings, QByteArray, QBuffer, QIODevice, QFile
@@ -99,14 +100,25 @@ class TokenUploader():
 
             if error:
 
-                ScreenCloud.setError("Could not upload to: " + self.url_address + "\nError: " + error)
-                return False
+                raise Exception(error)
 
             ScreenCloud.setUrl(url)
             
-        except urllib.error.HTTPError as exc:
+        except urllib.error.HTTPError as e:
         
-            ScreenCloud.setError("Error while connecting to: " + self.url_address + "\nError:\n" + exc.fp.read())
+            ScreenCloud.setError("Error while connecting to: " + self.url_address + "\nError:\n" + e.fp.read())
+            return False
+            
+        except Exception as e:
+        
+            try:
+            
+                ScreenCloud.setError("Could not upload to: " + self.url_address + "\nError: " + e.message)
+                
+            except AttributeError:
+            
+                ScreenCloud.setError("Unexpected error while uploading:\n" + traceback.format_exc())
+                
             return False
             
         return True
