@@ -65,6 +65,13 @@ function output(array $data = array()) {
     exit;
 }
 
+// decode JSON post data
+$contentType = isset($_SERVER['HTTP_CONTENT_TYPE']) ? $_SERVER['HTTP_CONTENT_TYPE'] : '';
+if ('application/json' === substr($contentType, 0, 16)) {
+    $data = file_get_contents('php://input');
+    $_POST = json_decode($data, true);
+}
+
 // `name` check is optional
 if (empty($_POST) || !isset($_POST['image']) || !isset($_POST['token']) || !isset($_POST['name'])) {
     output(array('error' => 'Invalid input.'));
