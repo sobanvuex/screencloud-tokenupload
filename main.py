@@ -113,7 +113,7 @@ class TokenUploader():
         
             try:
             
-                ScreenCloud.setError("Could not upload to: " + self.url_address + "\nError: " + e.message)
+                ScreenCloud.setError("Could not upload to: " + self.url_address + "\nError: {0}".format(str(e)))
                 
             except AttributeError:
             
