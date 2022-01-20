@@ -3,7 +3,7 @@ URL Token Upload for ScreenCloud
 
 ScreenCloud is an easy to use screenshot sharing tool consisting of a cross-platform client and a sharing website: [http://screencloud.net/](http://screencloud.net/)
 
-The goal of this plugin is store (and process) your screanshots by a private endpoint.
+The goal of this plugin is store (and process) your screenshots by a private endpoint.
 
 Installation
 ------------
